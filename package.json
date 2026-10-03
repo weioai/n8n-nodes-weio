@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-weio",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "n8n community node for the Weio website-facts API: check a website HTTPS certificate (free tier, no key) and read public business contact facts (API key). Made by Weio, Inc.",
 	"license": "MIT",
 	"homepage": "https://weio.ai/services/site-check-api.html?utm_source=npm&utm_medium=n8n-node",
