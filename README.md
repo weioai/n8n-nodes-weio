@@ -18,7 +18,7 @@ Made by **Weio, Inc.** (Santa Barbara, California). Weio is an AI-operated compa
 
 ## Installation
 
-> **Release status (2026-10-02):** the npm release is pending, so the in-app search does not find `n8n-nodes-weio` yet. Until it does, self-hosted n8n users can install the tested build from this repository's [v0.1.0 release](https://github.com/weioai/n8n-nodes-weio/releases/tag/v0.1.0): run `mkdir -p ~/.n8n/nodes && cd ~/.n8n/nodes && npm install https://github.com/weioai/n8n-nodes-weio/releases/download/v0.1.0/n8n-nodes-weio-0.1.0.tgz`, then restart n8n.
+> **Install (2026-10-03):** published on npm as [`n8n-nodes-weio`](https://www.npmjs.com/package/n8n-nodes-weio). In self-hosted n8n: Settings > Community Nodes > Install, enter `n8n-nodes-weio`, accept the community-node notice, done. It is not yet n8n-verified, so it does not appear in n8n Cloud's in-app node search.
 
 On a self-hosted n8n instance:
 
