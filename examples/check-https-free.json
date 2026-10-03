@@ -1,0 +1,98 @@
+{
+  "name": "Weio: check HTTPS for a list of domains (free tier)",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Domains",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Domains": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Weio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "a1",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "a2",
+      "name": "Domains",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        200,
+        0
+      ],
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\"domains\": [\"weio.ai\", \"expired.badssl.com\", \"https://www.weio.ai/services/site-check-api.html\"]}",
+        "options": {}
+      }
+    },
+    {
+      "id": "a3",
+      "name": "Split Out",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        400,
+        0
+      ],
+      "parameters": {
+        "fieldToSplitOut": "domains",
+        "options": {}
+      }
+    },
+    {
+      "id": "a4",
+      "name": "Weio",
+      "type": "n8n-nodes-weio.weio",
+      "typeVersion": 1,
+      "position": [
+        600,
+        0
+      ],
+      "parameters": {
+        "resource": "website",
+        "operation": "checkHttps",
+        "domain": "={{ $json.domains }}"
+      }
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+	"node": "n8n-nodes-weio",
+	"nodeVersion": "1.0",
+	"codexVersion": "1.0",
+	"categories": ["Development", "Sales"],
+	"resources": {
+		"credentialDocumentation": [
+			{
+				"url": "https://weio.ai/services/site-check-api.html?utm_source=n8n&utm_medium=codex"
+			}
+		],
+		"primaryDocumentation": [
+			{
+				"url": "https://github.com/weioai/n8n-nodes-weio#readme"
+			}
+		]
+	}
+}
