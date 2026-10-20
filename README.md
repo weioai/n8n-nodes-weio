@@ -2,7 +2,7 @@
 
 An [n8n](https://n8n.io/) community node for the **Weio website-facts API**. It does two things:
 
-- **Check HTTPS**: checks what a visitor sees when they open a domain (and its `www.` address) in a browser. It reports whether the site loads securely or shows a full-page privacy warning or "Not secure", and why: expired certificate, wrong certificate, self-signed, no HTTPS, redirect trouble, unreachable. **Free tier, no API key needed.**
+- **Check HTTPS**: checks what a visitor sees when they open a domain (and its `www.` address) in a browser. It reports whether the site loads securely or shows a full-page privacy warning or "Not secure", and why: expired certificate, wrong certificate, self-signed, no HTTPS, redirect trouble, unreachable.
 - **Get Site Info**: reads a business website's homepage and returns what the business publishes about itself: page title and description, language, CMS or website builder, whether it has a mobile viewport tag, role contact emails (info@, sales@, office@ and similar), phone numbers, social profile links and the contact or about page. **Needs an API key.**
 
 Made by **Weio, Inc.** (Santa Barbara, California). Weio is an AI-operated company: AI operators wrote, tested and documented this node.
@@ -10,7 +10,6 @@ Made by **Weio, Inc.** (Santa Barbara, California). Weio is an AI-operated compa
 [Installation](#installation) ·
 [Operations](#operations) ·
 [Credentials](#credentials) ·
-[Free vs paid](#free-vs-paid) ·
 [Use as an AI agent tool](#use-as-an-ai-agent-tool) ·
 [Errors](#errors) ·
 [Compatibility](#compatibility) ·
@@ -52,7 +51,7 @@ Checks `example.com` and `www.example.com` and returns one item per input domain
 | `expired_days` | Days since the certificate expired (negative means days left) |
 | `tls_host` | The host the certificate was read from |
 
-Real output from a test run on 2026-10-02 (n8n 2.41.6, no credential, free tier) for `weio.ai`:
+Real output from a test run on 2026-10-02 for `weio.ai`:
 
 ```json
 {
@@ -89,9 +88,9 @@ When a credential is attached, the response also has `credits_remaining`.
 
 ### Get Site Info
 
-Needs a Weio API credential. Each call uses 1 credit. Personal-name email addresses are left out on purpose; only role addresses are returned. You are responsible for using contact data lawfully (for example CAN-SPAM, and GDPR where it applies).
+Needs a Weio API credential. Personal-name email addresses are left out on purpose; only role addresses are returned. You are responsible for using contact data lawfully (for example CAN-SPAM, and GDPR where it applies).
 
-Real output from a test run on 2026-10-02 for `https://weio.ai/` with **Simplify** turned off:
+Real output from a test run on 2026-10-02 for `https://weio.ai/` with **Simplify** turned off (the description field is replaced by a note):
 
 ```json
 {
@@ -101,7 +100,7 @@ Real output from a test run on 2026-10-02 for `https://weio.ai/` with **Simplify
   "final_url": "https://weio.ai/",
   "http_status": 200,
   "title": "Weio — AI-operated software, automation and business data",
-  "description": "Weio is an AI-operated company: fixed-price software, automation and business data. Lead lists, n8n workflow packs, a website facts API and website work, each with a sample before you buy.",
+  "description": "(omitted: the site description from 2026-10-02 described offers that have since been withdrawn)",
   "language": "en",
   "mobile_viewport": true,
   "cms": null,
@@ -134,28 +133,17 @@ If the site cannot be reached, the simplified item is `{ "domain", "reachable": 
 
 ### Example workflow
 
-[`examples/check-https-free.json`](examples/check-https-free.json) is the workflow used for the free-tier test above: Manual Trigger, a list of domains, Split Out, then **Weio: Check HTTPS**. Import it with **Workflow menu > Import from File**.
+[`examples/check-https-free.json`](examples/check-https-free.json) is the workflow used for the test above: Manual Trigger, a list of domains, Split Out, then **Weio: Check HTTPS**. Import it with **Workflow menu > Import from File**.
 
 ## Credentials
 
-**Check HTTPS works without a credential.** For **Get Site Info**, or to go past the free limits, create a **Weio API** credential:
+**Check HTTPS works without a credential.** Get Site Info requires an existing Weio API key. New Weio API keys are not available for purchase. If you have one:
 
-1. Buy a key at [weio.ai/services/site-check-api.html](https://weio.ai/services/site-check-api.html?utm_source=github&utm_medium=readme&utm_campaign=n8n-nodes-weio). It costs $9 for 1,000 calls, valid for 12 months, paid through Stripe. The key (it starts with `wk_`) is emailed to you automatically after checkout.
-2. In n8n, open **Credentials > Add credential > Weio API** and paste the key.
+1. In n8n, open **Credentials > Add credential > Weio API** and paste the key.
 
 The node sends the key as `Authorization: Bearer <key>`.
 
 Testing the credential runs one HTTPS check on `weio.ai`, which uses 1 credit. The Weio API has no free endpoint for checking a key yet.
-
-## Free vs paid
-
-| | Without a key | With a key |
-| --- | --- | --- |
-| Check HTTPS | Free. Currently limited to a few checks per minute and 20 per day per IP address, inside a daily cap shared by all free users | 1 credit per domain. Up to 30 calls per minute per key |
-| Get Site Info | Not available | 1 credit per domain |
-| Price | $0 | $9 for 1,000 calls (one key, valid 12 months) |
-
-A call that cannot run because the service is busy is not charged. Free-tier limits can change.
 
 ## Use as an AI agent tool
 
@@ -173,7 +161,7 @@ The Weio API answers failed calls with `{"ok": false, "error": "..."}`. The node
 | 429 | Weio rate limit reached: too many checks from here; try again in a minute |
 | 503 | Weio could not run the check: this address has used today's free checks; try again tomorrow |
 
-Turn on the node's **On Error > Continue** setting if one bad domain should not stop the workflow. To stay under the free per-minute limit with many items, use **Request Options > Batching**.
+Turn on the node's **On Error > Continue** setting if one bad domain should not stop the workflow. To stay under the per-minute limit with many items, use **Request Options > Batching**.
 
 ## Compatibility
 
@@ -181,9 +169,7 @@ Tested on 2026-10-02 with n8n 2.41.6 (Docker image `n8nio/n8n:latest`), installe
 
 ## Resources
 
-- [Weio website-facts API](https://weio.ai/services/site-check-api.html?utm_source=github&utm_medium=readme&utm_campaign=n8n-nodes-weio) (pricing, terms, MCP server at `https://weio.ai/mcp`)
 - [n8n community nodes documentation](https://docs.n8n.io/integrations/community-nodes/)
-- Questions or refunds: sales@weio.ai
 
 ## Version history
 
