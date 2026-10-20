@@ -13,8 +13,7 @@ export class WeioApi implements ICredentialType {
 
 	icon: Icon = { light: 'file:../icons/weio.svg', dark: 'file:../icons/weio.dark.svg' };
 
-	documentationUrl =
-		'https://weio.ai/services/site-check-api.html?utm_source=n8n&utm_medium=credential';
+	documentationUrl = 'https://github.com/weioai/n8n-nodes-weio#readme';
 
 	properties: INodeProperties[] = [
 		{
@@ -25,8 +24,6 @@ export class WeioApi implements ICredentialType {
 			required: true,
 			default: '',
 			placeholder: 'e.g. wk_...',
-			description:
-				'Your Weio API key (starts with wk_). Keys cost $9 for 1,000 calls and are emailed after checkout at weio.ai/services/site-check-api.html.',
 		},
 		{
 			displayName:
@@ -62,14 +59,6 @@ export class WeioApi implements ICredentialType {
 					value: 401,
 					message:
 						'Weio did not accept this API key. Check that it starts with wk_ and was copied in full.',
-				},
-			},
-			{
-				type: 'responseCode',
-				properties: {
-					value: 402,
-					message:
-						'This key has no credits left or has expired. Buy more at https://weio.ai/services/site-check-api.html',
 				},
 			},
 			{
