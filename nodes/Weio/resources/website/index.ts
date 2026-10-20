@@ -53,26 +53,6 @@ export const websiteDescription: INodeProperties[] = [
 		default: 'checkHttps',
 	},
 	{
-		displayName:
-			'Works without a credential on the free tier (a few checks per minute and 20 per day per IP address). With a Weio API credential each check uses 1 credit.',
-		name: 'freeTierNotice',
-		type: 'notice',
-		default: '',
-		displayOptions: {
-			show: { ...showOnlyForWebsite, operation: ['checkHttps'] },
-		},
-	},
-	{
-		displayName:
-			'Needs a Weio API credential. Each call uses 1 credit ($9 for 1,000 calls at weio.ai/services/site-check-api.html).',
-		name: 'keyRequiredNotice',
-		type: 'notice',
-		default: '',
-		displayOptions: {
-			show: { ...showOnlyForWebsite, operation: ['getSiteInfo'] },
-		},
-	},
-	{
 		displayName: 'Domain',
 		name: 'domain',
 		type: 'string',
