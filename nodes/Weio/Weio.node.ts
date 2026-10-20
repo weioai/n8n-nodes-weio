@@ -17,7 +17,6 @@ export class Weio implements INodeType {
 		usableAsTool: true,
 		inputs: [NodeConnectionTypes.Main],
 		outputs: [NodeConnectionTypes.Main],
-		// Optional: Check HTTPS runs on the free tier without a key. Get Site Info needs one.
 		credentials: [{ name: 'weioApi', required: false }],
 		requestDefaults: {
 			baseURL: 'https://weio.ai/api',
