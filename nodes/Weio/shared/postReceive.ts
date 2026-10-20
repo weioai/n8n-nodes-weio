@@ -7,9 +7,6 @@ import type {
 } from 'n8n-workflow';
 import { NodeApiError } from 'n8n-workflow';
 
-export const BUY_URL =
-	'https://weio.ai/services/site-check-api.html?utm_source=n8n&utm_medium=node';
-
 function toObject(body: unknown): IDataObject {
 	if (body !== null && typeof body === 'object' && !Array.isArray(body)) {
 		return body as IDataObject;
@@ -53,30 +50,28 @@ export async function checkWeioResponse(
 		case 401:
 			if (apiMessage.toLowerCase().startsWith('api key required')) {
 				message = 'Get Site Info needs a Weio API key';
-				description = `Add a Weio API credential to this node. Keys cost $9 for 1,000 calls: ${BUY_URL}`;
+				description = `Add a Weio API credential to this node.`;
 			} else {
 				message = 'Weio did not accept the API key';
-				description = `Check the key in the Weio API credential (it starts with wk_), or get a new key at ${BUY_URL}`;
+				description = `Check the key in the Weio API credential (it starts with wk_)`;
 			}
 			break;
 		case 402:
 			message = `Weio API key: ${apiMessage}`;
-			description = `Buy more credits ($9 for 1,000 calls) at ${BUY_URL}`;
+			description = 'This key has no credits left or has expired.';
 			break;
 		case 429:
 			message = `Weio rate limit reached: ${apiMessage}`;
 			description =
-				"Wait a minute, space items out with 'Request Options' > 'Batching', or add a Weio API credential for higher limits";
+				"Wait a minute, or space items out with 'Request Options > Batching'";
 			break;
 		case 503:
 			message = `Weio could not run the check: ${apiMessage}`;
-			description = body.buy
-				? `Free checks are limited per day. An API key is not subject to the daily free limit: ${BUY_URL}`
-				: 'Try again in a minute. Calls that could not run are not charged.';
+			description = 'Try again in a minute.';
 			break;
 		default:
 			message = `Weio API returned: ${apiMessage}`;
-			description = 'Try again later. If this keeps happening, email sales@weio.ai';
+			description = 'Try again later.';
 	}
 
 	throw new NodeApiError(this.getNode(), body as JsonObject, {
